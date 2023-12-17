@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Login Page
+{% endblock %}
+
+
+
+{% block content %}
+    <style>
+        body {
+            background-color: #000;
+            color: #ffffff;
+            margin: 0;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            display: flex;
+        }
+
+        .form-container {
+            background-color: #1f1f1f;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            margin: auto;
+            margin-top: 100px;
+        }
+
+        .form-container h1 {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1db954;
+            text-align: center;
+        }
+
+        .form-control {
+            background-color: #121212;
+            color: #ffffff;
+            border: 1px solid #1db954;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            padding: 10px;
+            width: 100%;
+        }
+
+        .form-control:focus {
+            background-color: #1f1f1f;
+            border: 1px solid #1db954;
+        }
+
+        .btn-primary {
+            background-color: #1db954; /* Spotify green */
+            border-color: #1db954;
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background-color: #168f48; /* Darker green on hover */
+            border-color: #168f48;
+        }
+
+        .checkbox {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .checkbox h5 {
+            color: #ffffff;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            color: #ffffff;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #5a6268;
+        }
+
+        img.logo {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 100px;
+            height: auto;
+        }
+    </style>
+    <div class="form-container">
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            <h1>Please Login</h1>
+
+            <div class="form-group">
+                {{ form.username.label() }}
+                {{ form.username(class="form-control", placeholder="User Name", required=true) }}
+            </div>
+
+            <div class="form-group">
+                {{ form.password.label() }}
+                {{ form.password(class="form-control", placeholder="Password", required=true) }}
+            </div>
+
+            <button class="btn btn-primary" type="submit">Login</button>
+
+            <div class="checkbox">
+                <h5>Do not have an account?</h5>
+                <small id="adminLink" class="form-text text-muted">
+                    <a href="{{ url_for('admin_login') }}">Are you an admin?</a>
+                </small>
+                <br>
+                <a class="btn btn-secondary" href="{{ url_for('signup_page') }}">Signup</a>
+            </div>
+        </form>
+    </div>
+    <img src="https://i.ibb.co/h12sjRz/thousand-sunny-tracks-high-resolution-logo-white-transparent.png" alt="logo" class="logo">
+{% endblock %}
+
+
+
+
+
+
+

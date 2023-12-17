@@ -1,0 +1,196 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    body {
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        background-color: #121212;
+        color: #ffffff;
+        margin: 0;
+        overflow-x: hidden;
+    }
+
+    .container {
+        padding: 20px;
+    }
+
+    h1, h2, h3 {
+        color: #1db954;
+        font-weight: bold;
+    }
+
+    .search-results {
+        overflow-x: auto;
+        white-space: nowrap;
+        margin-bottom: 20px;
+    }
+
+    .search-results .search-card {
+        display: inline-block;
+        margin-right: 10px;
+    }
+
+    .search-card {
+        background-color: #1f1f1f;
+        border: 1px solid #121212;
+        border-radius: 8px;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+    }
+
+    .search-card:hover {
+        transform: scale(1.05);
+    }
+
+    .search-card img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+    }
+
+    .search-card .card-body {
+        padding: 10px;
+    }
+
+    .search-card .card-title {
+        font-size: 16px;
+        font-weight: bold;
+        color: #ffffff;
+        margin-bottom: 5px;
+    }
+
+    .search-card .card-text {
+        font-size: 14px;
+        color: #ffffff;
+        margin-bottom: 3px;
+    }
+
+    .search-card .green-button {
+        background-color: #1db954;
+        color: #ffffff;
+        padding: 8px 16px;
+        text-decoration: none;
+        display: inline-block;
+        border-radius: 4px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .search-card .green-button:hover {
+        background-color: #169c4e;
+        color: #ffffff;
+    }
+
+</style>
+
+<div class="container">
+    <h1>Search Results</h1>
+
+    {% if results_songs %}
+        <h2>Songs</h2>
+        <div class="search-results">
+            {% for artist_song in results_songs %}
+                <div class="search-card">
+                    <img src="{{ artist_song.poster }}" alt="Song Poster">
+                    <div class="card-body">
+                        <h3 class="card-title">{{ artist_song.title }}</h3>
+                        <p class="card-text">Artist: {{ artist_song.artist_name }}</p>
+                        <p class="card-text">Genre: {{ artist_song.genre }}</p>
+
+                        {% if artist_song.album %}
+                            <p class="card-text">Album: {{ artist_song.album.title }}</p>
+                        {% endif %}
+
+                        <p class="card-text">Average Rating: {{ artist_song.average_rating }}</p>
+
+                        {% if artist_song.audio_link %}
+                            <a href="{{ url_for('currently_playing', song_id=artist_song.id) }}" class="audio-link green-button">
+                                Play
+                            </a>
+                            <a href="#" class="read-lyrics green-button" data-toggle="modal" data-target="#lyricsModal{{ artist_song.id }}">
+                                Read Lyrics
+                            </a>
+                        {% else %}
+                            <p class="no-audio-message">No audio link available</p>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if results_albums %}
+        <h2>Albums</h2>
+        <div class="search-results">
+            {% set displayed_albums = [] %}
+            {% for result_album in results_albums %}
+                {% if result_album not in displayed_albums %}
+                    {% set _ = displayed_albums.append(result_album) %}
+                    <div class="search-card">
+                        <img src="{{ result_album.poster }}" alt="Album Poster">
+                        <div class="card-body">
+                            <h3 class="card-title">{{ result_album.title }}</h3>
+                            <p class="card-text">Genre: {{ result_album.genre }}</p>
+                            <p class="card-text">Creator: {{ result_album.creator.username }}</p>
+                            <button class="green-button" onclick="location.href='{{ url_for('view_songs', album_id=result_album.id) }}'">View Songs</button>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if results_genres %}
+        <h2>Genres</h2>
+        <div class="search-results">
+            {% set displayed_albums = [] %}
+            {% for genre in results_genres %}
+                {% for album in genre.albums %}
+                    {% if album not in displayed_albums %}
+                        {% set _ = displayed_albums.append(album) %}
+                        <div class="search-card">
+                            <img src="{{ album.poster }}" alt="Album Poster">
+                            <div class="card-body">
+                                <h3 class="card-title">{{ album.title }}</h3>
+                                <p class="card-text">Genre: {{ album.genre }}</p>
+                                <p class="card-text">Creator: {{ album.creator.username }}</p>
+                                <button class="green-button" onclick="location.href='{{ url_for('view_songs', album_id=album.id) }}'">View Songs</button>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+
+{% for artist_song in results_songs %}
+    <div class="modal fade" id="lyricsModal{{ artist_song.id }}" tabindex="-1" role="dialog" aria-labelledby="lyricsModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="background-color: #ffffff; color: #000000;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="lyricsModalLabel">Lyrics</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <pre>{{ artist_song.lyrics }}</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+

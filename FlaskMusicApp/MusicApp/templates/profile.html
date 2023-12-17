@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %} Profile {% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="profile-header">
+            <h2 class="mb-4 font-weight-bold">Welcome, {{ current_user.username }}!</h2>
+        </div>
+
+        <div class="profile-content">
+            {% if current_user.role == 'user' %}
+                <form action="{{ url_for('upgrade_to_creator') }}" method="post">
+                    <button class="btn btn-success font-weight-bold" type="submit">Become a Creator</button>
+                </form>
+                <div class="mt-3">
+                    <p class="font-weight-bold">Perks of becoming a Creator:</p>
+                    <ul class="list-group">
+                        <li class="list-group-item font-weight-bold">Upload and share your own music</li>
+                        <li class="list-group-item font-weight-bold">Create and manage your playlists</li>
+                        <li class="list-group-item font-weight-bold">Connect with a larger audience</li>
+                        <li class="list-group-item font-weight-bold">Create and manage your own albums</li>
+                        <li class="list-group-item font-weight-bold">Edit and customize your music content</li>
+                    </ul>
+                </div>
+            {% else %}
+                <p class="mt-3 font-weight-bold">You are already a Creator.</p>
+                {% if current_user.flag_reason %}
+                    <p class="mt-3">Flag Reason: {{ current_user.flag_reason }}</p>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+
+    <style>
+        body {
+            background-color: #000;
+            color: #ffffff;
+            font-family: 'Tahoma', sans-serif;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .profile-header {
+            margin-bottom: 20px;
+        }
+
+        .profile-header h2 {
+            color: #ffffff;
+            font-weight: bold;
+        }
+
+        .profile-content {
+            background-color: #121212;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-success {
+            background-color: #1db954;
+            border-color: #1db954;
+            color: #000;
+        }
+
+        .btn-success:hover {
+            background-color: #6c757d;
+            border-color: #6c757d;
+            color: #1db954;
+        }
+
+        .font-weight-bold {
+            font-weight: bold;
+        }
+
+        .list-group {
+            width: 85%;
+            text-align: center;
+        }
+
+        .list-group-item {
+            background-color: #1db954;
+            border: 1px solid #1db954;
+            color: #000;
+            border-radius: 5px;
+            margin-top: 5px;
+            margin-left: 150px;
+        }
+    </style>
+{% endblock %}
+
+
+
+
+
+
+

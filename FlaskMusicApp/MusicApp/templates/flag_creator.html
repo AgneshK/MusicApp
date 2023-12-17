@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Flag Creator - {{ user.username }}
+{% endblock %}
+
+{% block content %}
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            margin: 0;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+
+        .center-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .form-container {
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1db954;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #121212;
+            border-radius: 5px;
+            background-color: #1f1f1f;
+            color: #ffffff;
+            resize: vertical;
+        }
+
+        button {
+            background-color: #1db954;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #168f48;
+        }
+    </style>
+
+    <div class="center-container">
+        <div class="form-container">
+            <h1>Flag Creator - {{ user.username }}</h1>
+
+            <form method="post">
+                {{ csrf_token }}
+                <label for="reason">Reason for Flag:</label>
+                <textarea id="reason" name="reason" rows="4" cols="50" required></textarea>
+                <br>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+
+

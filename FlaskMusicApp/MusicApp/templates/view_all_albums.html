@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    All Albums
+{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #121212;
+        color: #ffffff;
+        margin: 0;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
+
+    h1 {
+        font-size: 28px;
+        font-weight: bold;
+        color: #1db954;
+    }
+
+    .container {
+        margin: 0 auto;
+        max-height: 600px;
+        overflow-y: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        padding: 15px;
+        border: 1px solid #121212;
+        color: #ffffff;
+    }
+
+    th {
+        background-color: #121212;
+        border: 1px solid #ffffff;
+    }
+
+    tr:nth-child(even) {
+        background-color: #1f1f1f;
+    }
+
+    tr:hover {
+        background-color: #292929;
+    }
+
+    .poster {
+        max-width: 50px;
+        max-height: 50px;
+    }
+</style>
+    <div class="container mt-5">
+        <h1>All Albums</h1>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Genre</th>
+                    <th>Creator</th>
+                    <th>Created At</th>
+                    <th>Poster</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for album in all_albums %}
+                    <tr>
+                        <td>{{ album.title }}</td>
+                        <td>{{ album.genre }}</td>
+                        <td>{{ album.creator.username }}</td>
+                        <td>{{ album.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                        <td><img class="poster" src="{{ album.poster }}" alt="{{ album.title }} Poster"></td>
+                        <td>
+                            {% if current_user.role == 'admin' or current_user == album.creator %}
+                                <form action="{{ url_for('delete_album', album_id=album.id) }}" method="post">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            {% else %}
+                                <span class="badge badge-secondary">No Permission</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+

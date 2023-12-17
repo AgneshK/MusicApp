@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Top Songs by Genre
+{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #121212;
+        color: #ffffff;
+        margin: 0;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
+
+    h1 {
+        font-size: 28px;
+        font-weight: bold;
+        color: #1db954;
+    }
+
+    .container {
+        margin: 0 auto;
+        max-height: 600px;
+        overflow-y: auto;
+        margin-bottom: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        padding: 15px;
+        border: 1px solid #121212;
+        color: #ffffff;
+    }
+
+    th {
+        background-color: #121212;
+        border: 1px solid #ffffff;
+    }
+
+    tr:nth-child(even) {
+        background-color: #1f1f1f;
+    }
+
+    tr:hover {
+        background-color: #292929;
+    }
+
+    .delete-btn {
+        background-color: #d9534f;
+        border: none;
+        color: #ffffff;
+        padding: 6px 12px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 12px;
+        margin: 2px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    .poster-img {
+        max-width: 80px;
+        max-height: 80px;
+    }
+</style>
+
+<div class="container mt-5">
+    <h1>Top Songs by Genre</h1>
+
+    {% for genre, songs in top_songs_by_genre.items() %}
+        <h2>{{ genre|capitalize }}</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Artist</th>
+                    <th>Rating</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for song in songs %}
+                    {% if song.average_rating > 0 %}
+                        <tr>
+                            <td>{{ song.title }}</td>
+                            <td>{{ song.artist_name }}</td>
+                            <td>{{ song.average_rating }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
+</div>
+{% endblock %}

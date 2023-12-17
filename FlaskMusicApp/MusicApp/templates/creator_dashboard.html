@@ -1,0 +1,237 @@
+{% extends 'base.html' %}
+
+{% block title %}Creator Dashboard{% endblock %}
+
+{% block content %}
+
+<style>
+    body {
+        background-color: #000;
+        color: #ffffff;
+        margin: 0;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
+
+    .container {
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-start;
+        text-align: center;
+        margin-top: 4rem;
+    }
+
+    .table-container {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        padding: 15px;
+        border: 1px solid #121212;
+        color: #ffffff;
+    }
+
+    th {
+        background-color: #121212;
+    }
+
+    tr:nth-child(even) {
+        background-color: #1f1f1f;
+    }
+
+    tr:hover {
+        background-color: #292929;
+    }
+
+    h2 {
+        font-size: 28px;
+        font-weight: bold;
+        color: #1db954;
+        margin-top: 20px;
+    }
+
+    .btn-container {
+        margin-top: 20px;
+    }
+
+    .btn {
+        border: none;
+        padding: 8px 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        text-decoration: none;
+    }
+
+    .btn-play {
+        background-color: #1db954;
+        color: white;
+    }
+
+    .btn-play:hover {
+        background-color: #168f48;
+    }
+
+    .btn-edit {
+        background-color: #f9a825;
+        color: white;
+    }
+
+    .btn-edit:hover {
+        background-color: #c67c00;
+    }
+
+    .btn-delete {
+        background-color: #ff0000;
+        color: white;
+    }
+
+    .btn-delete:hover {
+        background-color: #cc0000;
+    }
+
+    .btn[disabled] {
+        background-color: #808080;
+        color: #ffffff;
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+
+    .table-container + .table-container {
+        margin-top: 40px;
+    }
+
+    .table-container.albums {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+</style>
+
+<div class="container">
+    <div>
+        <h2>My Songs</h2>
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Poster</th>
+                        <th>Title</th>
+                        <th>Artist</th>
+                        <th>Genre</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for song in songs %}
+                        <tr>
+                            <td>
+                                <img src="{{ song.poster }}" alt="Song Poster" style="max-width: 100px; max-height: 100px;">
+                            </td>
+                            <td><strong>{{ song.title }}</strong></td>
+                            <td>{{ song.artist_name }}</td>
+                            <td>{{ song.genre }}</td>
+                            <td>
+                                <a href="{{ url_for('currently_playing', song_id=song.id) }}" class = "btn btn-play">
+                                    Play
+                                </a>
+                                <br>
+                                <br>
+                                <a href="{{ url_for('edit_song', song_id=song.id) }}" class="btn btn-edit">Edit</a>
+                                <br>
+                                <br>
+                                <form method="post" action="{{ url_for('delete_song', song_id=song.id) }}" style="display: inline;">
+                                    <button type="submit" onclick="return confirm('Are you sure you want to delete this song?')" class="btn btn-delete">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="btn-container">
+            {% if current_user.is_flagged %}
+                <a href="#" class="btn btn-primary" disabled>
+                    Add New Song
+                </a>
+            {% else %}
+                <a href="{{ url_for('add_song') }}" class="btn btn-primary">
+                    Add New Song
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div>
+        <h2>My Albums</h2>
+        <div class="table-container albums">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Poster</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for album in albums %}
+                        <tr>
+                            <td><strong>{{ album.title }}</strong></td>
+                            <td>{{ album.description }}</td>
+                            <td>
+                                <img src="{{ album.poster }}" alt="Album Poster" style="max-width: 100px; max-height: 100px;">
+                            </td>
+                            <td>
+                                <a href="{{ url_for('edit_album', album_id=album.id) }}" class="btn btn-edit"> Edit </a>
+                                <br>
+                                <br>
+                                <a href="{{ url_for('view_songs', album_id=album.id) }}" class="btn btn-play"> View Songs </a>
+                                <br>
+                                <br>
+                                <form method="post" action="{{ url_for('delete_album', album_id=album.id) }}" style="display: inline;">
+                                    <button type="submit" onclick="return confirm('Are you sure you want to delete this album?')" class="btn btn-delete">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="btn-container">
+            {% if current_user.is_flagged %}
+                <a href="#" class="btn btn-primary" disabled>
+                    Create New Album
+                </a>
+            {% else %}
+                <a href="{{ url_for('create_album') }}" class="btn btn-primary">
+                    Create New Album
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

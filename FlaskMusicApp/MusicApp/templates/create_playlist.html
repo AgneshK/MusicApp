@@ -1,0 +1,71 @@
+<!-- create_playlist.html -->
+
+{% extends 'base.html' %}
+
+{% block title %}Create Playlist{% endblock %}
+
+{% block content %}
+<style>
+  .form-container {
+    background-color: #121212;
+    padding: 20px;
+    border-radius: 5px;
+    border: 2px solid #1db954;
+    border-radius: 10px;
+    padding: 20px;
+  }
+
+  .form-container h2{
+     font-weight: bold;
+     color: #1db954;
+  }
+
+  .form-container label,
+  .form-container .btn-success {
+    font-weight: bold;
+  }
+
+  .btn-success {
+    background-color: #1db954;
+    border-color: #1db954;
+    color: #000;
+  }
+
+  .btn-success:hover {
+    background-color: #168f45;
+    border-color: #168f45;
+    color: #fff;
+  }
+</style>
+
+<div class="container mt-4 form-container">
+  <h2>Create Playlist</h2>
+
+  <form method="post">
+    {{ form.csrf_token }}
+    <div class="form-group">
+      <label for="{{ form.name.id }}">{{ form.name.label }}</label>
+      {{ form.name(class="form-control") }}
+    </div>
+
+    <div class="form-group">
+      <label for="{{ form.songs.id }}">{{ form.songs.label }}</label>
+      {% for choice in form.songs.choices %}
+        <div class="form-check">
+          <input type="checkbox" id="{{ form.songs.id }}_{{ loop.index }}" name="{{ form.songs.name }}" value="{{ choice[0] }}" {% if form.songs.data and choice[0] in form.songs.data %}checked{% endif %}>
+          <label class="form-check-label" for="{{ form.songs.id }}_{{ loop.index }}">{{ choice[1] }}</label>
+        </div>
+      {% endfor %}
+    </div>
+
+    <button type="submit" class="btn btn-success btn-green-hover">Create Playlist</button>
+  </form>
+</div>
+{% endblock %}
+
+
+
+
+
+
+

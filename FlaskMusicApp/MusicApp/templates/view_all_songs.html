@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    All Songs
+{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #121212;
+        color: #ffffff;
+        margin: 0;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
+
+    h1 {
+        font-size: 28px;
+        font-weight: bold;
+        color: #1db954;
+    }
+
+    .container {
+        margin: 0 auto;
+        max-height: 600px;
+        overflow-y: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        padding: 15px;
+        border: 1px solid #121212;
+        color: #ffffff;
+    }
+
+    th {
+        background-color: #121212;
+        border: 1px solid #ffffff;
+    }
+
+    tr:nth-child(even) {
+        background-color: #1f1f1f;
+    }
+
+    tr:hover {
+        background-color: #292929;
+    }
+
+    .delete-btn {
+        background-color: #d9534f;
+        border: none;
+        color: #ffffff;
+        padding: 6px 12px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 12px;
+        margin: 2px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    .poster-img {
+        max-width: 80px;
+        max-height: 80px;
+    }
+</style>
+    <div class="container mt-5">
+        <h1>All Songs</h1>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Genre</th>
+                    <th>Artist</th>
+                    <th>Creator</th>
+                    <th>Created At</th>
+                    <th>Poster</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for song in all_songs %}
+                    <tr>
+                        <td>{{ song.title }}</td>
+                        <td>{{ song.genre }}</td>
+                        <td>{{ song.artist_name }}</td>
+                        <td>{{ song.creator.username }}</td>
+                        <td>{{ song.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                        <td>
+                            {% if song.poster %}
+                                <img src="{{ song.poster }}" alt="{{ song.title }} Poster" class="poster-img">
+                            {% else %}
+                                No Poster
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if current_user.role == 'admin' or current_user == song.creator %}
+                                <form action="{{ url_for('delete_song', song_id=song.id) }}" method="post">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button type="submit" class="delete-btn">Delete</button>
+                                </form>
+                            {% else %}
+                                <span class="badge badge-secondary">No Permission</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+

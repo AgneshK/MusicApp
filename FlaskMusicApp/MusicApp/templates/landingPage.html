@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block content %}
+     <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background-color: black;
+            overflow: hidden;
+        }
+
+        h4{
+            justify-content: center;
+            align-items: center;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 506px);
+            grid-template-rows: repeat(3, 200px);
+            grid-gap: 20px;
+            width: 1560px;
+            height: 840px;
+            margin: auto;
+            margin-top: 40px;
+        }
+
+        .grid-item {
+            width: 100%;
+            height: 100%;
+            background-color: #121212;
+            overflow: hidden;
+            border-radius: 15px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .grid-item img {
+            width: 100%;
+            height: 80%;
+            object-fit: contain;
+            border-radius: 15px;
+        }
+        .grid-item img.special-image {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <h4>
+        <marquee>This is an example of html marquee </marquee>
+    </h4>
+    <div class="grid-container">
+        <div class="grid-item">
+            <img src="https://i.ibb.co/chznKCL/songs-high-resolution-logo-transparent.png" alt="Image 1">
+        </div>
+        <div class="grid-item">
+            <img src="https://i.ibb.co/wwbZCSX/music-high-resolution-logo-transparent.png" alt="Image 2">
+        </div>
+        <div class="grid-item">
+            <img src="https://i.ibb.co/ySCTD7c/albums-high-resolution-logo-transparent.png" alt="Image 3">
+        </div>
+        <div class="grid-item">
+            <img src="https://i.ibb.co/cQZxhDS/listen-high-resolution-logo-transparent-1.png" alt="Image 4">
+        </div>
+        <div class="grid-item">
+            <img src="https://i.ibb.co/0CXtFm6/thousand-sunny-tracks-high-resolution-logo-transparent.png" alt="Image 5"  class="special-image">
+        </div>
+        <div class="grid-item">
+            <img src="https://i.ibb.co/QmM2390/create-high-resolution-logo-transparent.png" alt="Image 6">
+        </div>
+        <div class="grid-item">
+            <img src="https://i.ibb.co/9h2JyZq/playlists-high-resolution-logo-transparent.png" alt="Image 7">
+        </div>
+        <div class="grid-item">
+            <img src="https://i.ibb.co/tBpzY9v/lyrics-high-resolution-logo-transparent.png" alt="Image 8">
+        </div>
+        <div class="grid-item">
+            <img src="https://i.ibb.co/KxbtFHh/explore-high-resolution-logo-transparent.png" alt="Image 9">
+        </div>
+    </div>
+{% endblock %}
+
+
+
+
+
+
+

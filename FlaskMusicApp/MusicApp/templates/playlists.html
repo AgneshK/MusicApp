@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <style>
+    h1, h4, p {
+        font-size: 28px;
+        font-weight: bold;
+        color: #1db954;
+        margin-left: 750px;
+        margin-top: 50px;
+    }
+    .playlist-table {
+      font-size: 14px;
+      width: 80%;
+      margin: 20px auto;
+      border-collapse: collapse;
+      text-align: center;
+    }
+    .playlist-table th, .playlist-table td {
+      padding: 15px;
+      border: 1px solid #121212;
+    }
+
+    .playlist-table th {
+      background-color: #121212;
+      color: #ffffff;
+      border: 1px solid #ffffff;
+    }
+
+    .playlist-table tbody tr:nth-child(even) {
+      background-color: #2a2a2a;
+    }
+
+    .playlist-table tbody tr:nth-child(odd) {
+      background-color: #1f1f1f;
+    }
+
+    .playlist-table tbody tr:hover {
+      background-color: #292929;
+    }
+
+    .song-poster {
+      max-width: 40px;
+      max-height: 40px;
+    }
+
+    .no-audio-message {
+      font-size: 12px;
+      color: white;
+    }
+
+    .selected-row {
+      background-color: #f0f0f0;
+    }
+
+    .playlist-actions {
+      margin-top: 10px;
+    }
+
+    .playlist-actions button {
+      margin-right: 10px;
+      background-color: #1db954;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .playlist-actions button:hover {
+      background-color: #168f48;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .btn-create-playlist {
+      background-color: #1db954;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 20px;
+      display: inline-block;
+    }
+
+    .btn-create-playlist:hover {
+      background-color: #168f48;
+    }
+
+    .audio-link {
+      background-color: #1db954;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .audio-link:hover {
+      background-color: #168f48; /* Darker green on hover */
+    }
+
+  </style>
+
+  <h1>Your Playlists</h1>
+
+  {% if playlists %}
+    {% for playlist in playlists %}
+      <div class="mt-4">
+        <h4>Name: {{ playlist.name }}</h4>
+        <table class="playlist-table">
+          <thead>
+            <tr>
+              <th>Poster</th>
+              <th>Title</th>
+              <th>Artist</th>
+              <th>Genre</th>
+              <th>Audio</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for song in playlist.songs %}
+              <tr class="song-row" data-audio="{{ song.audio_link }}">
+                <td>
+                  {% if song.poster %}
+                    <img class="song-poster" src="{{ song.poster }}" alt="{{ song.title }} Poster">
+                  {% endif %}
+                </td>
+                <td>{{ song.title }}</td>
+                <td>{{ song.artist_name }}</td>
+                <td>{{ song.genre }}</td>
+                <td>
+                  {% if song.audio_link %}
+                     <a href="{{ url_for('currently_playing', song_id=song.id) }}" class="audio-link">
+                                Play
+                     </a>
+                  {% else %}
+                    <p class="no-audio-message">No audio link available</p>
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <div class="playlist-actions text-center">
+          <form method="post" action="{{ url_for('edit_playlist', playlist_id=playlist.id) }}" class="d-inline">
+            <button type="submit">Edit Playlist</button>
+          </form>
+
+          <form method="post" action="{{ url_for('delete_playlist', playlist_id=playlist.id) }}" class="d-inline">
+            <button type="submit">Delete Playlist</button>
+          </form>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p class="mt-3">You don't have any playlists yet.</p>
+  {% endif %}
+
+  <div class="text-center mt-4">
+    <a href="{{ url_for('create_playlist') }}" class="btn-create-playlist">Create New Playlist</a>
+  </div>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+

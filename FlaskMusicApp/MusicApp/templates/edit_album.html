@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Album{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #121212;
+        color: #ffffff;
+        margin: 0;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
+
+    .container {
+        background-color: #121212;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        margin-top: 4rem;
+        border: 2px solid #1db954;
+        border-radius: 10px;
+        padding: 20px;
+    }
+
+    h2 {
+        font-size: 28px;
+        font-weight: bold;
+        color: #1db954;
+    }
+
+    form {
+        width: 80%;
+        margin-top: 20px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 10px;
+        color: #ffffff;
+        font-weight: bold;
+    }
+
+    .form-container {
+        background-color: #121212;
+        padding: 20px;
+        border-radius: 5px;
+        border: 2px solid #1db954;
+        border-radius: 10px;
+        padding: 20px;
+    }
+
+    .form-container h2 {
+        font-weight: bold;
+        color: #1db954;
+    }
+
+    .form-container label,
+    .form-container .btn-success {
+        font-weight: bold;
+    }
+
+    .btn-success {
+        background-color: #1db954;
+        border-color: #1db954;
+        color: #000;
+    }
+
+    .btn-success:hover {
+        background-color: #168f45;
+        border-color: #168f45;
+        color: #fff;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-check {
+        margin-bottom: 10px;
+    }
+
+    .form-check-input {
+        margin-right: 5px;
+    }
+
+    .song-list {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 10px;
+    }
+
+    .song-item {
+        display: inline-flex;
+        align-items: center;
+        margin-right: 20px;
+    }
+</style>
+
+<div class="container mt-4 form-container">
+    <h2>Edit Album</h2>
+
+    <form method="post" action="{{ url_for('edit_album', album_id=album.id) }}">
+        {{ form.csrf_token }}
+        {{ form.hidden_tag() }}
+
+        <div class="form-group">
+            <label for="{{ form.title.id }}">Album Title</label>
+            {{ form.title(class="form-control") }}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.description.id }}">Album Description</label>
+            {{ form.description(class="form-control") }}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.genre.id }}">Album Genre</label>
+            {{ form.genre(class="form-control") }}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.poster.id }}">Album Poster</label>
+            {{ form.poster(class="form-control") }}
+        </div>
+
+        <div class="form-group checkbox-group">
+            <label>Available Songs</label>
+            <div class="song-list">
+                {% for song in available_songs %}
+                    <div class="song-item">
+                        <div class="form-check">
+                            <input type="checkbox" name="songs" value="{{ song.id }}" {% if song in album.songs %}checked{% endif %} class="form-check-input">
+                        </div>
+                        <label for="song_{{ song.id }}">
+                            {{ song.title }} by {{ song.artist_name }}
+                        </label>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-success btn-green-hover">Update Album</button>
+    </form>
+</div>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,338 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    body {
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        background-color: #121212;
+        color: #ffffff;
+        margin: 0;
+    }
+
+    h1 {
+        font-size: 28px;
+        font-weight: bold;
+        color: #1db954;
+        margin-left: 800px;
+        margin-top: 50px;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column-reverse;
+        margin-bottom: 60px;
+    }
+
+    .music-table-container {
+        position: relative;
+        max-height: 500px;
+        overflow-y: auto;
+        display: block;
+        margin-top: 50px;
+    }
+
+    .music-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 0 auto;
+    }
+
+    .music-table th,
+    .music-table td {
+        padding: 15px;
+        border: 1px solid #121212;
+        color: #ffffff;
+        text-align: left;
+    }
+
+    .music-table th {
+        background-color: #121212;
+        color: #ffffff;
+        border: 1px solid #ffffff;
+    }
+
+    .music-table tbody tr:nth-child(even) {
+        background-color: #2a2a2a;
+    }
+
+    .music-table tbody tr:nth-child(odd) {
+        background-color: #1f1f1f;
+    }
+
+    .music-table tbody tr:hover {
+        background-color: #292929;
+    }
+
+    .song-row {
+        background-color: #1f1f1f;
+    }
+
+    .song-row:hover {
+        background-color: #292929;
+    }
+
+    .song-info h3 {
+        font-size: 16px;
+        font-weight: normal;
+        margin: 0;
+    }
+
+    .song-poster {
+        max-width: 50px;
+        max-height: 50px;
+        margin-right: 20px;
+        border-radius: 5px;
+    }
+
+    .audio-link,
+    .read-lyrics,
+    .rate-song {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 5px;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .audio-link {
+        background-color: #1db954;
+        color: #ffffff;
+    }
+
+    .audio-link:hover {
+        background-color: #25a05f;
+    }
+
+    .read-lyrics {
+        background-color: #4caf50;
+        color: white;
+    }
+
+    .read-lyrics:hover {
+        background-color: #45a049;
+    }
+
+    .rate-song {
+        background-color: #2196F3;
+        color: white;
+    }
+
+    .rate-song:hover {
+        background-color: #0e86d4;
+    }
+
+    .no-audio-message {
+        color: #999;
+    }
+
+    .album-table-container {
+        position: relative;
+        max-height: 500px;
+        overflow-y: auto;
+        display: block;
+        margin-top: 30px;
+    }
+
+    .album-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 0 auto;
+    }
+
+    .album-table th,
+    .album-table td {
+        padding: 15px;
+        border: 1px solid #121212;
+        color: #ffffff;
+        text-align: left;
+    }
+
+    .album-table th {
+        background-color: #121212;
+        color: #ffffff;
+        border: 1px solid #ffffff;
+    }
+
+    .album-table tbody tr:nth-child(even) {
+        background-color: #2a2a2a;
+    }
+
+    .album-table tbody tr:nth-child(odd) {
+        background-color: #1f1f1f;
+    }
+
+    .album-table tbody tr:hover {
+        background-color: #292929;
+    }
+
+    .album-poster {
+        max-width: 50px;
+        max-height: 50px;
+        margin-right: 20px;
+        border-radius: 5px;
+    }
+
+    .view-songs-btn {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 5px;
+        background-color: #1db954;
+        color: #ffffff;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .view-songs-btn:hover {
+        background-color: #25a05f;
+    }
+
+    .green-button {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 5px;
+        background-color: #1db954;
+        color: #ffffff;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .green-button:hover {
+        background-color: #25a05f;
+    }
+</style>
+<h1>Songs and Albums</h1>
+    <div class="container">
+        <div class="music-table-container">
+            <table class="music-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Title</th>
+                        <th>Artist</th>
+                        <th>Genre</th>
+                        <th>Audio</th>
+                        <th>Rating</th>
+                        <th>Rate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for song in songs %}
+                    <tr class="song-row">
+                        <td>
+                            {% if song.poster %}
+                            <img class="song-poster" src="{{ song.poster }}" alt="{{ song.title }} Poster">
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="song-info">
+                                <h3>{{ song.title }}</h3>
+                            </div>
+                        </td>
+                        <td>{{ song.artist_name }}</td>
+                        <td>{{ song.genre }}</td>
+                        <td>
+                            {% if song.audio_link %}
+                            <a href="{{ url_for('currently_playing', song_id=song.id) }}" class="audio-link">
+                                Play
+                            </a>
+                            <a href="#" class="read-lyrics" data-toggle="modal" data-target="#lyricsModal{{ song.id }}">Read Lyrics</a>
+                            {% else %}
+                            <p class="no-audio-message">No audio link available</p>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if song.average_rating == 0.0 %}
+                                -
+                            {% else %}
+                                {{ song.average_rating }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#rateModal{{ song.id }}">
+                                Rate
+                            </button>
+                        </td>
+                    </tr>
+
+                    <div class="modal fade" id="lyricsModal{{ song.id }}" tabindex="-1" role="dialog" aria-labelledby="lyricsModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="lyricsModalLabel" STYLE="color: black;">Lyrics</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <pre>{{ song.lyrics }}</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="rateModal{{ song.id }}" tabindex="-1" role="dialog" aria-labelledby="rateModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="rateModalLabel" STYLE="color: black;">Rate Song</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="POST" action="{{ url_for('rate_song', song_id=song.id) }}">
+                                        {{ form.hidden_tag() }}
+                                        <div class="form-group">
+                                            <label for="rating">Select your rating:</label>
+                                            <select class="form-control" id="rating" name="rating">
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                            </select>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Submit Rating</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="album-table-container">
+            <table class="album-table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Poster</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for album in albums %}
+                    <tr>
+                        <td><strong>{{ album.title }}</strong></td>
+                        <td>
+                            <img src="{{ album.poster }}" alt="Album Poster" style="max-width: 100px; max-height: 100px;">
+                        </td>
+                        <td>
+                            <br>
+                            <a href="{{ url_for('view_songs', album_id=album.id) }}" class="green-button">
+                                View Songs
+                            </a>
+                            <br>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

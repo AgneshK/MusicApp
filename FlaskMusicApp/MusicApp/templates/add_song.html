@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Song{% endblock %}
+
+{% block content %}
+  <style>
+    body {
+        background-color: #121212;
+        color: #ffffff;
+        margin: 0;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
+
+    .center-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top:50px;
+    }
+
+    .form-container {
+        text-align: center;
+    }
+
+    h2 {
+        font-size: 28px;
+        font-weight: bold;
+        color: #1db954;
+    }
+
+    form {
+        margin-top: 20px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 10px;
+        color: #ffffff;
+    }
+
+    textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #121212;
+        border-radius: 5px;
+        background-color: #1f1f1f;
+        color: #ffffff;
+        resize: vertical;
+    }
+
+    button {
+        background-color: #1db954;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+        background-color: #168f48;
+    }
+  </style>
+
+  <div class="center-container">
+    <div class="form-container">
+      <h2>Add a New Song</h2>
+
+      <form method="POST" action="{{ url_for('add_song') }}" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            {{ form.title.label(class="form-control-label") }}
+            {{ form.title(class="form-control", placeholder="Title") }}
+          </div>
+
+          <div class="form-group col-md-6">
+            {{ form.lyrics.label(class="form-control-label") }}
+            {{ form.lyrics(class="form-control", placeholder="Lyrics") }}
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            {{ form.duration.label(class="form-control-label") }}
+            {{ form.duration(class="form-control", placeholder="Duration") }}
+          </div>
+
+          <div class="form-group col-md-6">
+            {{ form.genre.label(class="form-control-label") }}
+            {{ form.genre(class="form-control", placeholder="Genre") }}
+          </div>
+        </div>
+
+        <div class="form-group">
+          {{ form.artist_name.label(class="form-control-label") }}
+          {{ form.artist_name(class="form-control", placeholder="Artist Name") }}
+        </div>
+
+        <div class="form-group">
+          {{ form.audio_link.label(class="form-control-label") }}
+          {{ form.audio_link(class="form-control", placeholder="Audio Link") }}
+        </div>
+
+        <div class="form-group">
+          {{ form.poster.label(class="form-control-label") }}
+          {{ form.poster(class="form-control", placeholder="Poster") }}
+        </div>
+
+        <button type="submit">Add Song</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}
+
+

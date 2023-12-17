@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    All Regular Users
+{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #121212;
+        color: #ffffff;
+        margin: 0;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
+
+    h1 {
+        font-size: 28px;
+        font-weight: bold;
+        color: #1db954;
+    }
+
+    .container {
+        margin: 0 auto;
+        max-height: 400px;
+        overflow-y: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        padding: 15px;
+        border: 1px solid #121212;
+        color: #ffffff;
+    }
+
+    th {
+        background-color: #121212;
+        border: 1px solid #ffffff;
+    }
+
+    tr:nth-child(even) {
+        background-color: #1f1f1f;
+    }
+
+    tr:hover {
+        background-color: #292929;
+    }
+</style>
+    <div class="container mt-5">
+        <h1>All Regular Users</h1>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Created At</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for regular_user in all_regular_users %}
+                    <tr>
+                        <td>{{ regular_user.username }}</td>
+                        <td>{{ regular_user.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
